@@ -1,5 +1,4 @@
-# flutter_bloc_playground
-
+# qr_code_issue
 A new Flutter project.
 
 ## Getting Started
