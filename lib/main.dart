@@ -3,9 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 
 void main() async {
-  // cubitCounting();
-  // await blocCounting();
-
   runApp(MainScreen());
 }
 
@@ -22,11 +19,19 @@ class MainScreen extends StatelessWidget {
   }
 }
 
-class FirstScreen extends StatelessWidget {
+class FirstScreen extends StatefulWidget {
+  @override
+  _FirstScreenState createState() => _FirstScreenState();
+}
+
+class _FirstScreenState extends State<FirstScreen> {
   GlobalKey _qrKey = GlobalKey(debugLabel: "first");
+  QRViewController _qrController;
 
   @override
   Widget build(BuildContext context) {
+    print("Build first screen");
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Color.fromARGB(255, 78, 34, 100),
@@ -38,10 +43,13 @@ class FirstScreen extends StatelessWidget {
             SizedBox(
               width: 300,
               height: 300,
-              child: QRView(key: _qrKey, onQRViewCreated: (_) => print("created")),
+              child: QRView(key: _qrKey, onQRViewCreated: (controller) => _qrController = controller),
             ),
             MaterialButton(
-              onPressed: () => Navigator.of(context).pushNamed("/other"),
+              onPressed: () {
+                print("navigating to next screen");
+                Navigator.of(context).pushNamed("/other");
+              },
               child: Text("Go to other"),
             ),
           ],
@@ -49,13 +57,27 @@ class FirstScreen extends StatelessWidget {
       ),
     );
   }
+
+  @override
+  void dispose() {
+    _qrController?.dispose();
+    super.dispose();
+  }
 }
 
-class SecondScreen extends StatelessWidget {
+class SecondScreen extends StatefulWidget {
+  @override
+  _SecondScreenState createState() => _SecondScreenState();
+}
+
+class _SecondScreenState extends State<SecondScreen> {
   GlobalKey _qrKey = GlobalKey(debugLabel: "second");
+  QRViewController _qrController;
 
   @override
   Widget build(BuildContext context) {
+    print("Build second screen");
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Color.fromARGB(255, 78, 34, 100),
@@ -67,11 +89,17 @@ class SecondScreen extends StatelessWidget {
             SizedBox(
               width: 300,
               height: 300,
-              child: QRView(key: _qrKey, onQRViewCreated: (_) => print("created")),
+              child: QRView(key: _qrKey, onQRViewCreated: (controller) => _qrController = controller),
             ),
           ],
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    _qrController?.dispose();
+    super.dispose();
   }
 }
