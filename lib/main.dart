@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:focus_detector/focus_detector.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 
 void main() async {
@@ -32,27 +33,31 @@ class _FirstScreenState extends State<FirstScreen> {
   Widget build(BuildContext context) {
     print("Build first screen");
 
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Color.fromARGB(255, 78, 34, 100),
-      ),
-      body: Center(
-        child: Column(
-          children: [
-            Text("First"),
-            SizedBox(
-              width: 300,
-              height: 300,
-              child: QRView(key: _qrKey, onQRViewCreated: (controller) => _qrController = controller),
-            ),
-            MaterialButton(
-              onPressed: () {
-                print("navigating to next screen");
-                Navigator.of(context).pushNamed("/other");
-              },
-              child: Text("Go to other"),
-            ),
-          ],
+    return FocusDetector(
+      onFocusLost: () => _qrController?.pauseCamera(),
+      onFocusGained: () => _qrController?.resumeCamera(),
+      child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: Color.fromARGB(255, 78, 34, 100),
+        ),
+        body: Center(
+          child: Column(
+            children: [
+              Text("First"),
+              SizedBox(
+                width: 300,
+                height: 300,
+                child: QRView(key: _qrKey, onQRViewCreated: (controller) => _qrController = controller),
+              ),
+              MaterialButton(
+                onPressed: () {
+                  print("navigating to next screen");
+                  Navigator.of(context).pushNamed("/other");
+                },
+                child: Text("Go to other"),
+              ),
+            ],
+          ),
         ),
       ),
     );
