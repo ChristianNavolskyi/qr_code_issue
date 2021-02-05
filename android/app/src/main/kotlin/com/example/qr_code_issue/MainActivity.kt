@@ -1,4 +1,4 @@
-package com.example.flutter_bloc_playground
+package com.example.qr_code_issue
 
 import io.flutter.embedding.android.FlutterActivity
 
